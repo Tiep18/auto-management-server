@@ -3,11 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
 const nocache = require('nocache')
-const mongoose = require('mongoose')
-
-// Import routes
-const userRoutes = require('./routes/user.js')
-const authRoutes = require('./routes/auth.js')
+// const mongoose = require('mongoose');
 
 const app = express()
 
@@ -49,23 +45,19 @@ app.use(
 )
 
 // Routes
-app.use('/users', userRoutes)
-app.use('/auth', authRoutes)
-
 // TODO: Define your routes here
+
 // Connect to MongoDB
+// mongoose
+//   .connect(process.env.MONGODB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log('Connected to MongoDB'))
+//   .catch((err) => console.error(err));
+
 // Start the server
 const port = process.env.PORT || 3000
-
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log('connected to MongoDB')
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`)
-    })
-  })
-  .catch((err) => console.error(err))
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`)
+})
