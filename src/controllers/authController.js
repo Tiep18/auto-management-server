@@ -1,14 +1,14 @@
 const AuthService = require('../service/authService.js')
 
 class AuthController {
-  // [POST] /auth/register
-  async register(req, res, next) {
-    return AuthService.register(req, res, next)
-  }
-
-  // [GET] /auth/login
+  // [POST] /auth/login
   async login(req, res, next) {
     return AuthService.login(req, res, next)
+  }
+
+  // [POST] /auth/refesh
+  async refesh(req, res, next) {
+    return AuthService.requestRefeshToken(req, res, next)
   }
 }
 

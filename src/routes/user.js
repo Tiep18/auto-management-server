@@ -1,10 +1,10 @@
 const express = require('express')
 const userController = require('../controllers/userController.js')
-const veryfyToken = require('../middlewares/verifyToken.js')
+const verifyAccessToken = require('../middlewares/verifyAccessToken.js')
 
 const userRoutes = express.Router()
 
-userRoutes.use(veryfyToken)
+userRoutes.use(verifyAccessToken)
 
 userRoutes.post('/create', userController.create)
 userRoutes.delete('/:id', userController.delete)

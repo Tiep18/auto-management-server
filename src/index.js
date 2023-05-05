@@ -49,8 +49,8 @@ app.use(
 )
 
 // Routes
-app.use('/users', userRoutes)
-app.use('/auth', authRoutes)
+app.use('/api/users', userRoutes)
+app.use('/api/auth', authRoutes)
 
 // TODO: Define your routes here
 // Connect to MongoDB

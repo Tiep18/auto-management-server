@@ -1,37 +1,26 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User.js')
-const { registerValidator, loginValidator } = require('../utiles/validate.js')
+const { loginValidator } = require('../utiles/validate.js')
 
 const AuthService = {
-  register: async (req, res, next) => {
-    // validate the data
-    const { error } = registerValidator(req.body)
-    if (error) return res.status(400).send(error.details[0].message)
-
-    // hash password
-    const salt = await bcrypt.genSalt(10)
-    const password = req.body.password.toString()
-    const hashedPassword = await bcrypt.hash(password, salt)
-    // check if existing username
-    const existingUsername = await User.findOne({ username: req.body.username })
-    if (existingUsername) return res.status(400).send('username already exists')
-
-    const user = new User({
-      fullName: req.body.fullName,
-      username: req.body.username,
-      password: hashedPassword,
-    })
-
-    try {
-      const savedUser = await user.save()
-      res.status(200).send(savedUser)
-    } catch (error) {
-      next(error)
-    }
+  generateAccessToken: (user) => {
+    return jwt.sign(
+      { _id: user._id, username: user.username },
+      process.env.ACCESS_TOKEN_SECRET_KEY,
+      { expiresIn: '60s' }
+    )
   },
 
-  login: async (req, res, next) => {
+  generateRefeshToken: (user) => {
+    return jwt.sign(
+      { _id: user._id, username: user.username },
+      process.env.REFESH_TOKEN_SECRET_KEY,
+      { expiresIn: '1h' }
+    )
+  },
+
+  login: async (req, res) => {
     // validate the data
     const { error } = loginValidator(req.body)
     if (error) return res.status(400).send(error.details[0].message)
@@ -39,7 +28,7 @@ const AuthService = {
     try {
       // check if username not found
       const exitedUser = await User.findOne({ username: req.body.username })
-      if (!exitedUser) return res.status(401).send('Username not found')
+      if (!exitedUser) return res.status(404).send('Username not found')
 
       // check if password is not correct
       const isPasswordValid = await bcrypt.compare(
@@ -49,24 +38,35 @@ const AuthService = {
       if (!isPasswordValid) return res.status(400).send('Password not correct')
 
       // create and assign access token and refresh token
-      const accessToken = jwt.sign(
-        { _id: exitedUser._id },
-        process.env.ACCESS_TOKEN_SECRET_KEY,
-        { expiresIn: '1h' }
-      )
-      const refeshToken = jwt.sign(
-        { _id: exitedUser._id },
-        process.env.ACCESS_TOKEN_SECRET_KEY,
-        { expiresIn: '1 day' }
-      )
+      const accessToken = AuthService.generateAccessToken(exitedUser)
+      const refeshToken = AuthService.generateRefeshToken(exitedUser)
 
       res.json({
         message: 'Login successful',
-        data: { accessToken, refeshToken },
+        accessToken,
+        refeshToken,
       })
     } catch (error) {
-      next(error)
+      throw new Error(error)
     }
+  },
+
+  requestRefeshToken: (req, res) => {
+    // Bearer token
+    const refeshToken = req.headers.authorization?.split(' ')[1]
+    if (!refeshToken) return res.status(403).send('Access denied')
+    jwt.verify(
+      refeshToken,
+      process.env.REFESH_TOKEN_SECRET_KEY,
+      (err, user) => {
+        if (err) return res.status(401).send('refeshToken is invalid')
+        const newAccessToken = AuthService.generateAccessToken(user)
+
+        res.status(200).json({
+          newAccessToken,
+        })
+      }
+    )
   },
 }
 

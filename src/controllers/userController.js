@@ -1,57 +1,65 @@
 const User = require('../models/User.js')
 
 class UserController {
-  // [GET] /users
-  async showAll(req, res, next) {
+  // [GET] api/users
+  async showAll(req, res) {
     try {
       const users = await User.find({})
-      res.json(users)
+      res.status(200).json(users)
     } catch (error) {
-      next(error)
+      res.status(500).send(error.message)
     }
   }
 
-  // [GET] /users/:id
-  async showDetail(req, res, next) {
+  // [GET] api/users/:id
+  async showDetail(req, res) {
     const id = req.params.id
     try {
       const user = await User.findOne({ _id: id })
-      res.json(user)
+      res.status(200).json(user)
     } catch (error) {
-      next(error)
+      res.status(500).send(error.message)
     }
   }
 
-  // [POST] /users/create
-  async create(req, res, next) {
+  // [POST] api/users/create
+  async create(req, res) {
     try {
-      const user = await new User(req.body)
+      const user = new User(req.body)
       await user.save()
-      res.redirect('/users')
+      res.status(200).json({
+        fullname: user.fullName,
+        username: user.username,
+        role: user.role,
+      })
     } catch (error) {
-      next(error)
+      res.status(500).send(error.message)
     }
   }
 
-  // [UPDATE] /users/:id
-  async update(req, res, next) {
+  // [UPDATE] api/users/:id
+  async update(req, res) {
     const id = req.params.id
     try {
-      await User.updateOne({ _id: id }, req.body)
-      res.redirect('/users')
+      const newUser = await User.updateOne({ _id: id }, req.body)
+      res.status(200).json({
+        fullname: newUser.fullName,
+        username: newUser.username,
+        role: newUser.role,
+      })
     } catch (error) {
-      next(error)
+      res.status(500).send(error.message)
     }
   }
 
-  // [DELETE] /users/:id
-  async delete(req, res, next) {
+  // [DELETE] api/users/:id
+  async delete(req, res) {
     const id = req.params.id
     try {
       await User.deleteOne({ _id: id })
-      res.redirect('/users')
+      res.status(200).redirect('/api/users')
     } catch (error) {
-      next(error)
+      res.status(500).send(error.message)
     }
   }
 }
