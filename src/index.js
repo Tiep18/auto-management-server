@@ -8,7 +8,6 @@ const mongoose = require('mongoose')
 // Import routes
 const userRoutes = require('./routes/user.js')
 const authRoutes = require('./routes/auth.js')
-
 const app = express()
 
 // Middleware
@@ -53,7 +52,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
 
 // TODO: Define your routes here
-// Connect to MongoDB
+
 // Start the server
 const port = process.env.PORT || 3000
 
