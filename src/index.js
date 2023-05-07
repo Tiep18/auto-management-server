@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 // Import routes
 const userRoutes = require('./routes/user.js')
 const authRoutes = require('./routes/auth.js')
+const customerRoutes = require('./routes/customer.js')
 const app = express()
 
 // Middleware
@@ -50,8 +51,7 @@ app.use(
 // Routes
 app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
-
-// TODO: Define your routes here
+app.use('/api/customers', customerRoutes)
 
 // Start the server
 const port = process.env.PORT || 3000

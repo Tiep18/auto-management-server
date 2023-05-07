@@ -1,14 +1,14 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User.js')
-const { loginValidator } = require('../utiles/validate.js')
+const { loginValidator } = require('../utils/validate.js')
 
 const AuthService = {
   generateAccessToken: (user) => {
     return jwt.sign(
       { _id: user._id, username: user.username },
       process.env.ACCESS_TOKEN_SECRET_KEY,
-      { expiresIn: '60s' }
+      { expiresIn: '1h' }
     )
   },
 
@@ -16,7 +16,7 @@ const AuthService = {
     return jwt.sign(
       { _id: user._id, username: user.username },
       process.env.REFESH_TOKEN_SECRET_KEY,
-      { expiresIn: '1h' }
+      { expiresIn: '1d' }
     )
   },
 
