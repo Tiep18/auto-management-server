@@ -1,14 +1,15 @@
 const Joi = require('joi')
 
-// const registerValidator = function (data) {
-//   const schema = Joi.object({
-//     fullName: Joi.string().min(6).required(),
-//     username: Joi.string().min(6).required(),
-//     password: Joi.string().min(6).required(),
-//   })
+const createValidator = function (data) {
+  const schema = Joi.object({
+    fullName: Joi.string().min(6).required(),
+    username: Joi.string().min(6).required(),
+    password: Joi.string().min(6).required(),
+    role: Joi.string().required(),
+  })
 
-//   return schema.validate(data)
-// }
+  return schema.validate(data)
+}
 
 const loginValidator = function (data) {
   const schema = Joi.object({
@@ -19,4 +20,4 @@ const loginValidator = function (data) {
   return schema.validate(data)
 }
 
-module.exports = { loginValidator }
+module.exports = { loginValidator, createValidator }
