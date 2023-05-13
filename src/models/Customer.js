@@ -12,14 +12,13 @@ const customerSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      rrequired: [true, 'Phone number is required'],
+      required: [true, 'Phone number is required'],
       minlength: [10, 'Phone number must be at least 10 characters'],
       maxlength: [15, 'Phone number cannot exceed 15 characters'],
     },
     email: {
       type: String,
-      rrequired: [true, 'Email is required'],
-      unique: true,
+      required: [true, 'Email is required'],
       lowercase: true,
       validate: {
         validator: (value) => {

@@ -9,6 +9,7 @@ const CustomerService = {
       const savedCustomer = await newCustomer.save()
       res.status(201).json(savedCustomer)
     } catch (err) {
+      console.log(err)
       handleError(err, res, 'Failed to create customer')
     }
   },
