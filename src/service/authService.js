@@ -6,7 +6,12 @@ const { loginValidator } = require('../utils/validate.js')
 const AuthService = {
   generateAccessToken: (user) => {
     return jwt.sign(
-      { _id: user._id, username: user.username },
+      {
+        _id: user._id,
+        username: user.username,
+        fullName: user.fullName,
+        role: user.role,
+      },
       process.env.ACCESS_TOKEN_SECRET_KEY,
       { expiresIn: '1h' }
     )
@@ -14,7 +19,12 @@ const AuthService = {
 
   generateRefeshToken: (user) => {
     return jwt.sign(
-      { _id: user._id, username: user.username },
+      {
+        _id: user._id,
+        username: user.username,
+        fullName: user.fullName,
+        role: user.role,
+      },
       process.env.REFESH_TOKEN_SECRET_KEY,
       { expiresIn: '1d' }
     )
@@ -35,7 +45,8 @@ const AuthService = {
         req.body.password,
         exitedUser.password
       )
-      if (!isPasswordValid) return res.status(400).send('Password not correct')
+      if (!isPasswordValid)
+        return res.status(400).send('Password is not correct')
 
       // create and assign access token and refresh token
       const accessToken = AuthService.generateAccessToken(exitedUser)
@@ -49,6 +60,11 @@ const AuthService = {
     } catch (error) {
       throw new Error(error)
     }
+  },
+
+  getProfile: async (req, res) => {
+    const user = req.user
+    res.status(200).json(user)
   },
 
   requestRefeshToken: (req, res) => {

@@ -6,6 +6,11 @@ class AuthController {
     return AuthService.login(req, res, next)
   }
 
+  // [GET] /auth/profile
+  async getProfile(req, res, next) {
+    return AuthService.getProfile(req, res, next)
+  }
+
   // [POST] /auth/refesh
   async refesh(req, res, next) {
     return AuthService.requestRefeshToken(req, res, next)

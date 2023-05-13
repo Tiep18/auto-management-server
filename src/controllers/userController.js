@@ -1,4 +1,6 @@
+const bcrypt = require('bcrypt')
 const User = require('../models/User.js')
+const { createValidator } = require('../utiles/validate.js')
 
 class UserController {
   // [GET] api/users
@@ -24,8 +26,18 @@ class UserController {
 
   // [POST] api/users/create
   async create(req, res) {
+    const { error } = await createValidator(req.body)
+    if (error) return res.status(400).json(error)
+
+    const hashedPassword = await bcrypt.hash(req.body.password.toString(), 10)
+
     try {
-      const user = new User(req.body)
+      const user = new User({
+        fullName: req.body.fullName,
+        username: req.body.username,
+        password: hashedPassword,
+        role: req.body.role,
+      })
       await user.save()
       res.status(200).json({
         fullname: user.fullName,
