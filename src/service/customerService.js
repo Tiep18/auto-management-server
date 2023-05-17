@@ -54,7 +54,7 @@ const CustomerService = {
       const customer = await Customer.findById(customerId)
 
       if (!customer) {
-        return res.status(404).json({ error: 'Customer not found' })
+        return res.status(404).json({ message: 'Customer not found' })
       }
 
       res.json(customer)
@@ -70,7 +70,7 @@ const CustomerService = {
       const customer = await Customer.findById(customerId)
 
       if (!customer) {
-        return res.status(404).json({ error: 'Customer not found' })
+        return res.status(404).json({ message: 'Customer not found' })
       }
 
       const excludedFields = ['cars', 'orders']
@@ -91,11 +91,11 @@ const CustomerService = {
     try {
       const deletedCustomer = await Customer.findByIdAndDelete(customerId)
       if (!deletedCustomer) {
-        return res.status(404).json({ error: 'Customer not found' })
+        return res.status(404).json({ message: 'Customer not found' })
       }
       res.json({ message: 'Customer deleted successfully' })
     } catch (err) {
-      res.status(500).json({ error: 'Failed to delete customer' })
+      res.status(500).json({ message: 'Failed to delete customer' })
     }
   },
 }
