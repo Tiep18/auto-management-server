@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const User = require('../models/User.js')
-const { createValidator } = require('../utiles/validate.js')
+const { createValidator } = require('../utils/validate.js')
 
 class UserController {
   // [GET] api/users
