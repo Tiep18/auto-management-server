@@ -44,7 +44,7 @@ app.use(nocache())
 app.use(
   cors({
     // origin: CLIENT_ORIGIN_URL,
-    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    methods: ['GET', 'POST', 'DELETE', 'OPTIONS', 'PUT', 'PATCH'],
     allowedHeaders: ['Authorization', 'Content-Type'],
     maxAge: 86400,
   })
