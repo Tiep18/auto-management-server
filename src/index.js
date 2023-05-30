@@ -10,6 +10,8 @@ const userRoutes = require('./routes/user.js')
 const authRoutes = require('./routes/auth.js')
 const customerRoutes = require('./routes/customer.js')
 const serviceRoutes = require('./routes/service.js')
+const carRotes = require('./routes/car.js')
+
 const app = express()
 
 // Middleware
@@ -54,6 +56,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/customers', customerRoutes)
 app.use('/api/services', serviceRoutes)
+app.use('/api/cars', carRotes)
 
 // Start the server
 const port = process.env.PORT || 3000
