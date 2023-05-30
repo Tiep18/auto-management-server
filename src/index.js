@@ -11,6 +11,7 @@ const authRoutes = require('./routes/auth.js')
 const customerRoutes = require('./routes/customer.js')
 const carRoutes = require('./routes/car.js')
 const orderRoutes = require('./routes/order.js')
+const serviceRoutes = require('./routes/service.js')
 
 const app = express()
 
@@ -57,6 +58,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/customers', customerRoutes)
 app.use('/api/cars', carRoutes)
 app.use('/api/orders', orderRoutes)
+app.use('/api/services', serviceRoutes)
 
 // Start the server
 const port = process.env.PORT || 3000
