@@ -9,7 +9,8 @@ const mongoose = require('mongoose')
 const userRoutes = require('./routes/user.js')
 const authRoutes = require('./routes/auth.js')
 const customerRoutes = require('./routes/customer.js')
-const carRotes = require('./routes/car.js')
+const carRoutes = require('./routes/car.js')
+const orderRoutes = require('./routes/order.js')
 
 const app = express()
 
@@ -54,7 +55,8 @@ app.use(
 app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/customers', customerRoutes)
-app.use('/api/cars', carRotes)
+app.use('/api/cars', carRoutes)
+app.use('/api/orders', orderRoutes)
 
 // Start the server
 const port = process.env.PORT || 3000
