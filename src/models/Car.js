@@ -49,7 +49,7 @@ const carSchema = new mongoose.Schema(
       {
         orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' },
         startDate: { type: Date, required: true },
-        endDate: { type: Date, required: true },
+        endDate: { type: Date },
         cost: { type: Number, required: true },
       },
     ],

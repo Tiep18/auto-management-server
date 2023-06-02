@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 
+const STATUS = { working: 'WORKING', done: 'DONE' }
+
 const orderSchema = new mongoose.Schema(
   {
+    name: { type: String, required: true },
     customer: {
       customerId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -9,7 +12,7 @@ const orderSchema = new mongoose.Schema(
       },
       customerName: {
         type: String,
-        required: [true, 'Customer name is required'],
+        required: true,
       },
     },
     car: {
@@ -19,54 +22,38 @@ const orderSchema = new mongoose.Schema(
       },
       plateNumber: {
         type: String,
-        required: [true, 'Plate number is required'],
+        required: true,
       },
     },
-    address: {
-      type: String,
-      required: [true, 'Address is required'],
-    },
-    phone: {
-      type: String,
-      required: [true, 'Phone number is required'],
-      minlength: [10, 'Phone number must be at least 10 characters'],
-      maxlength: [15, 'Phone number cannot exceed 15 characters'],
-    },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      lowercase: true,
-      validate: {
-        validator: (value) => {
-          return /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value)
-        },
-        message: 'Invalid email format',
-      },
-    },
-    cars: [
+    services: [
       {
-        carId: {
+        serviceId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Car',
+          ref: 'services',
         },
-        plateNumber: {
+        name: {
           type: String,
+          required: true,
+        },
+        cost: {
+          type: Number,
           required: true,
         },
       },
     ],
-
-    orders: [
-      {
-        orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' },
-        name: { type: String, required: true },
-        date: { type: Date, required: true },
-      },
-    ],
+    status: {
+      type: String,
+      enum: STATUS,
+      default: STATUS.working,
+      required: true,
+    },
+    startDate: { type: Date, required: true },
+    endDate: { type: Date },
+    totalCost: { type: Number, required: true },
   },
   { timestamps: true }
 )
 
-const Customer = mongoose.model('Customer', orderSchema)
+const Order = mongoose.model('Order', orderSchema)
 
-module.exports = Customer
+module.exports = Order
