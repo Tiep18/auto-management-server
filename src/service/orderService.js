@@ -48,8 +48,8 @@ const OrderService = {
     const searchQuery = {
       $or: [
         { name: { $regex: search, $options: 'i' } },
-        { plateNumber: { $regex: search, $options: 'i' } },
-        { customerName: { $regex: search, $options: 'i' } },
+        { 'car.plateNumber': { $regex: search, $options: 'i' } },
+        { 'customer.customerName': { $regex: search, $options: 'i' } },
       ],
     }
 
