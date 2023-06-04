@@ -42,6 +42,7 @@ const OrderService = {
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 10
     const search = req.query.search || ''
+    const status = req.query.status || null
 
     const skip = (page - 1) * limit
 
@@ -51,6 +52,7 @@ const OrderService = {
         { 'car.plateNumber': { $regex: search, $options: 'i' } },
         { 'customer.customerName': { $regex: search, $options: 'i' } },
       ],
+      status: status ? status : { $in: ['WORKING', 'DONE'] },
     }
 
     try {
