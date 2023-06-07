@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose')
 const Service = require('../models/Service')
 const { handleError, validateAndUpdateDocument } = require('../utils')
 
@@ -81,6 +82,42 @@ const RepairService = {
       res.json(updatedService)
     } catch (err) {
       handleError(err, res, 'Failed to update service')
+    }
+  },
+
+  updateMany: async (req, res) => {
+    const { add, update, delete: toDelete } = req.body
+
+    const session = await mongoose.startSession()
+    session.startTransaction()
+
+    try {
+      if (add && Array.isArray(add)) {
+        await Service.create(add, { session })
+      }
+
+      if (update && Array.isArray(update)) {
+        for (const item of update) {
+          const { _id, ...updates } = item
+          await Service.findByIdAndUpdate(_id, updates, {
+            new: true,
+            session,
+          })
+        }
+      }
+
+      if (toDelete && Array.isArray(toDelete)) {
+        await Service.deleteMany({ _id: { $in: toDelete } }, { session })
+      }
+
+      await session.commitTransaction()
+      session.endSession()
+
+      res.status(200).json({ message: 'Service updated successfully' })
+    } catch (error) {
+      await session.abortTransaction()
+      session.endSession()
+      res.status(500).json({ error: 'An error occurred, failed to update' })
     }
   },
 
