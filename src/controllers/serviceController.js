@@ -1,4 +1,3 @@
-// const serviceservice = require('../service/serviceservice.js')
 const RepairService = require('../service/repairServiceService.js')
 
 class ServiceController {
@@ -12,7 +11,7 @@ class ServiceController {
     return RepairService.getAllService(req, res, next)
   }
 
-  // [GET] /services/types
+  // [GET] /services/types`
   async getTypes(req, res, next) {
     return RepairService.getAllServiceType(req, res, next)
   }
@@ -24,6 +23,11 @@ class ServiceController {
   // [PUT] /services/:id
   async update(req, res, next) {
     return RepairService.updateService(req, res, next)
+  }
+
+  // [PUT] /services/
+  async updateMany(req, res, next) {
+    return RepairService.updateMany(req, res, next)
   }
 
   // [DELETE] /services/:id
