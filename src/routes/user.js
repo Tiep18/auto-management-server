@@ -7,10 +7,10 @@ const userRoutes = express.Router()
 
 userRoutes.use(verifyAccessToken, checkRole)
 
-userRoutes.post('/create', userController.create)
 userRoutes.delete('/:id', userController.delete)
 userRoutes.put('/:id', userController.update)
-userRoutes.get('/:id', userController.showDetail)
-userRoutes.get('/', userController.showAll)
+userRoutes.get('/:id', userController.get)
+userRoutes.post('/', userController.create)
+userRoutes.get('/', userController.list)
 
 module.exports = userRoutes

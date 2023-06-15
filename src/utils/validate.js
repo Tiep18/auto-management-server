@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-const createValidator = function (data) {
+const userValidator = function (data) {
   const schema = Joi.object({
     fullName: Joi.string().min(6).required(),
     username: Joi.string().min(6).required(),
@@ -20,4 +20,4 @@ const loginValidator = function (data) {
   return schema.validate(data)
 }
 
-module.exports = { loginValidator, createValidator }
+module.exports = { loginValidator, userValidator }
