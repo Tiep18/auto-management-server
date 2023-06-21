@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const STATUS = { working: 'WORKING', done: 'DONE' }
+const PAYMENTSTATUS = { paid: 'PAID', unpaid: 'UNPAID' }
 
 const orderSchema = new mongoose.Schema(
   {
@@ -46,6 +47,15 @@ const orderSchema = new mongoose.Schema(
       enum: STATUS,
       default: STATUS.working,
       required: true,
+    },
+    payment: {
+      paymentStatus: {
+        type: String,
+        enum: PAYMENTSTATUS,
+        default: PAYMENTSTATUS.unpaid,
+        required: true,
+      },
+      payAtTime: { type: Date },
     },
     startDate: { type: Date, required: true },
     endDate: { type: Date },
