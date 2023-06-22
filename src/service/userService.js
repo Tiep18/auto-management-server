@@ -44,16 +44,18 @@ const UserService = {
       if (exitedUser) return res.status(401).json('Username is already in use')
       const hashedPassword = await bcrypt.hash(req.body.password.toString(), 10)
       const user = new User({
-        fullName: req.body.fullName,
-        username: req.body.username,
+        ...req.body,
         password: hashedPassword,
-        role: req.body.role,
       })
       await user.save()
       res.status(201).json({
         _id: user._id,
-        fullname: user.fullName,
+        fullName: user.fullName,
         username: user.username,
+        email: user.email,
+        phone: user.phone,
+        identityNumber: user.fullName,
+        address: user.address,
         role: user.role,
       })
     } catch (err) {
@@ -91,6 +93,10 @@ const UserService = {
         _id: user._id,
         fullName: user.fullName,
         username: user.username,
+        email: user.email,
+        phone: user.phone,
+        identityNumber: user.fullName,
+        address: user.address,
         role: user.role,
       })
     } catch (err) {
