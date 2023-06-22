@@ -43,8 +43,10 @@ const OrderService = {
     const limit = parseInt(req.query.limit) || 10
     const search = req.query.search || ''
     const status = req.query.status || null
+    const paymentStatus = req.query.paymentStatus || null
     const customerId = req.query.customerId
     const skip = (page - 1) * limit
+
     const queryCustomerId = customerId
       ? {
           'customer.customerId': customerId,
@@ -57,6 +59,9 @@ const OrderService = {
         { 'customer.customerName': { $regex: search, $options: 'i' } },
       ],
       status: status ? status : { $in: ['WORKING', 'DONE'] },
+      'payment.paymentStatus': paymentStatus
+        ? paymentStatus
+        : { $in: ['PAID', 'UNPAID'] },
 
       ...queryCustomerId,
     }
@@ -76,7 +81,6 @@ const OrderService = {
         data,
       })
     } catch (err) {
-      console.log(err)
       return res.status(500).json({ message: 'Failed to retrieve Orders' })
     }
   },
