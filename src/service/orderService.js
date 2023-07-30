@@ -161,7 +161,6 @@ const OrderService = {
         }
       )
     } catch (err) {
-      console.log(err)
       handleError(err, res, 'Failed to update order')
     }
   },
